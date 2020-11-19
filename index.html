@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Hao Niu's Lab 9</title>
+    <meta charset="utf-8" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.17.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@4.17.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.12.2"></script>
+
+    <style media="screen">
+        .vega-actions a {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 style='color: crimson;'>
+        The COVID Tracking Project
+    </h1>
+    <h5 style='color:indigo;'>
+        Data Source: <a href='https://covidtracking.com/' target="_blank">The Atlantic</a>
+    </h5>
+
+    <div id="vis"></div>
+
+    <script>
+
+        let vlSpec = {
+            "width": 600,
+            "height": 200,
+            "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+            "data": { "url": "https://api.covidtracking.com/v1/states/current.csv" },
+            "vconcat": [{
+                "width": 600,
+                "height": 200,
+                "mark": { "type": "point" },
+                "selection": {
+                    "brush": { "type": "interval" }
+                },
+                "encoding": {
+                    "x": { "field": "positive", "type": "quantitative" },
+                    "y": { "field": "death", "type": "quantitative" },
+                    "color": {
+                        "condition": {
+                            "selection": "brush",
+                            "field": "dataQualityGrade",
+                            "type": "nominal"
+                        },
+                        "value": "grey"
+                    },
+                    "tooltip": [
+                        { "field": "state", "type": "nominal" }
+                    ]
+                }
+            },
+            {
+                "repeat": ["hospitalizedCumulative", "recovered"],
+                "columns": 1,
+                "spec": {
+                    "transform": [{
+                        "filter": { "selection": "brush" }
+                    }],
+
+                    "mark": "bar",
+                    "width": 600,
+                    "height": 200,
+                    "encoding": {
+                        "x": { "field": "state" },
+                        "y": {
+                            "field": { "repeat": "repeat" },
+                            "type": "quantitative"
+                        },
+                    }
+                }
+            }]
+        }
+        vegaEmbed('#vis', vlSpec);
+    </script>
+</body>
+
+</html>

@@ -31,13 +31,13 @@
     <script>
 
         let vlSpec = {
-            "width": 600,
-            "height": 200,
+            "width": 1000,
+            "height": 300,
             "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
             "data": { "url": "https://api.covidtracking.com/v1/states/current.csv" },
             "vconcat": [{
-                "width": 600,
-                "height": 200,
+                "width": 1000,
+                "height": 300,
                 "mark": { "type": "point" },
                 "selection": {
                     "brush": { "type": "interval" }
@@ -67,8 +67,8 @@
                     }],
 
                     "mark": "bar",
-                    "width": 600,
-                    "height": 200,
+                    "width": 1000,
+                    "height": 300,
                     "encoding": {
                         "x": { "field": "state" },
                         "y": {
